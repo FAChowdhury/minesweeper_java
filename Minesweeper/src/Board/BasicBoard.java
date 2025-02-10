@@ -66,12 +66,10 @@ public class BasicBoard implements Board {
         int bound = width * height;
         for (int i = 0; i < numMines; ++i) {
             int randomInt = rand.nextInt(bound);
-            System.out.println(randomInt);
             while (grid.get(randomInt) == -1) {
                 randomInt = rand.nextInt(bound);
             }
             grid.set(randomInt, -1);
-
         }
     }
 

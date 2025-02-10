@@ -37,14 +37,14 @@ public class Grid {
         if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
             return 0;
         }
-        return grid.get(x * width + y);
+        return grid.get(x * height + y);
     }
 
     public void set(int x, int y, int value) {
         if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
             return;
         }
-        grid.set(x * width + y, value);
+        grid.set(x * height + y, value);
     }
 
     public int get(int idx) {
