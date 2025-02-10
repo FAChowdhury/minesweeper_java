@@ -9,11 +9,17 @@ public interface Board {
      * @return the height of the board
      */
     int getHeight();
+
+    /**
+     * 
+     * @return the total number of mines on the board.
+     */
+    int getNumMines();
     
     /**
      * Reset the board. This hides all tiles and places new mines.
      */
-    void reset();
+    void resetBoard();
     
     /**
      * Reveals the tile (x, y)
