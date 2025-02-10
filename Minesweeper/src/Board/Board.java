@@ -22,4 +22,9 @@ public interface Board {
      * @return true if the tile does not contain the mine, otherwise return false.
      */
     Boolean revealTile(int x, int y);
+
+    /**
+     * Renders the board to terminal
+     */
+    void render();
 }
