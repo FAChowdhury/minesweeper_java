@@ -8,7 +8,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         BoardDirector director = new BoardDirector();
         BoardBuilder builder = new BoardBuilder();
-        director.constructBeginnerBoard(builder);;
+        director.constructTestBoard(builder);
         Board board = builder.generateBoard();
         board.render();
 
@@ -44,7 +44,9 @@ public class App {
                             if (!board.revealTile(row, col)) {
                                 System.out.println("Game Over");
                                 board.renderBoardAsVisible();
+                                scanner.close();
                                 System.exit(0);
+                            } else {
                             }
                             break;
                         case "flag":
@@ -64,6 +66,11 @@ public class App {
                 System.out.println("Invalid command. Enter a command (e.g., sweep <row: int> <column: int>, flag <row: int> <column: int>, unflag <row: int> <column: int>):");
             }
             board.render();
+            if (board.isComplete()) {
+                System.out.println("Congratulations! You have completed the board!");
+                board.renderBoardAsVisible();
+                break;
+            }
         }
         // Close the scanner
         scanner.close();

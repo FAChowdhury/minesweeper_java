@@ -85,42 +85,49 @@ public class Grid {
         grid.get(row * getNumCol() + col).setIsFlagged(false);
     }
 
-    public void revealTile(int row, int col) {
+    public void revealTile(int row, int col, Board board) {
         int idx = row * getNumCol() + col;
+        int newlyVisibleTiles = 0;
         if (!grid.get(idx).getIsFlagged()) {
             if (grid.get(idx).getValue() == 0) {
-                revealTileWhenZero(row, col);
+                newlyVisibleTiles = revealTileWhenZero(row, col);
+                board.setNumVisible(board.getNumVisible() + newlyVisibleTiles);
+            } else {
+                grid.get(idx).setIsVisible(true);
+                board.setNumVisible(board.getNumVisible() + 1);
             }
-            grid.get(idx).setIsVisible(true);
         }
     }
 
-    private void revealTileWhenZero(int row, int col) {
+    private int revealTileWhenZero(int row, int col) {
         if (row < 0 || row > getNumRow() - 1 || col < 0 || col > getNumCol() - 1) {
-            return;
+            return 0;
         }
 
         int idx = row * getNumCol() + col;
 
         if (grid.get(idx).getIsVisible()) {
-            return;
+            return 0;
         }
+
+        int newlyVisibleTiles = 0;
 
         if (grid.get(idx).getValue() != -1) {
             grid.get(idx).setIsVisible(true);
+            ++newlyVisibleTiles;
         }
 
         if (grid.get(idx).getValue() != 0) {
-            return;
+            return newlyVisibleTiles;
         }
 
-        revealTileWhenZero(row - 1, col - 1);
-        revealTileWhenZero(row - 1, col);
-        revealTileWhenZero(row - 1, col + 1);
-        revealTileWhenZero(row, col - 1);
-        revealTileWhenZero(row, col + 1);
-        revealTileWhenZero(row + 1, col - 1);
-        revealTileWhenZero(row + 1, col);
-        revealTileWhenZero(row + 1, col + 1);
+        return revealTileWhenZero(row - 1, col - 1) +
+        revealTileWhenZero(row - 1, col) +
+        revealTileWhenZero(row - 1, col + 1) +
+        revealTileWhenZero(row, col - 1) +
+        revealTileWhenZero(row, col + 1) +
+        revealTileWhenZero(row + 1, col - 1) +
+        revealTileWhenZero(row + 1, col) +
+        revealTileWhenZero(row + 1, col + 1) + 1;
     }
 }

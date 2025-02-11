@@ -15,6 +15,24 @@ public interface Board {
      * @return the total number of mines on the board.
      */
     int getNumMines();
+
+    /**
+     * 
+     * @return true if the board is complete (i.e. game is finished), false otherwise
+     */
+    Boolean isComplete();
+
+    /**
+     * 
+     * @return the number of visible tiles on the board.
+     */
+    int getNumVisible();
+
+    /**
+     * Set the number of visible tiles on the board
+     * @param num
+     */
+    void setNumVisible(int num);
     
     /**
      * Reset the board. This hides all tiles and places new mines.

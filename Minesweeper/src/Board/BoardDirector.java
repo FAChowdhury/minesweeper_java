@@ -21,9 +21,9 @@ public class BoardDirector {
     }
 
     public void constructTestBoard(Builder builder) {
-        builder.setNumRow(15);
-        builder.setNumCol(10);
-        builder.setNumMines(40);
+        builder.setNumRow(5);
+        builder.setNumCol(5);
+        builder.setNumMines(3);
     }
 
 }

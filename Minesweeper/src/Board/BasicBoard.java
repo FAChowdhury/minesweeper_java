@@ -6,12 +6,14 @@ public class BasicBoard implements Board {
     private int numCol;
     private int numRow;
     private int numMines;
+    private int numVisible;
     private Grid grid;
 
     public BasicBoard(int numCol, int numRow, int numMines) {
         this.numCol = numCol;
         this.numRow = numRow;
         this.numMines = numMines;
+        this.numVisible = 0;
         this.grid = new Grid(numCol, numRow);
         this.resetBoard();
     }
@@ -34,7 +36,7 @@ public class BasicBoard implements Board {
 
     @Override
     public Boolean revealTile(int row, int col) {
-        grid.revealTile(row, col);
+        grid.revealTile(row, col, this);
         return !grid.containsNegativeBool(row, col);
     }
 
@@ -110,8 +112,7 @@ public class BasicBoard implements Board {
     @Override
     public void renderBoardAsVisible() {
         System.out.println();
-        System.out.println("Render Cheat");
-        System.out.println();
+        System.out.println("Board:");
         for (int i = 0; i < getNumRow(); ++i) {
             for (int j = 0; j < getNumCol(); ++j) {
                 if (grid.containsNegativeBool(i, j)) {
@@ -122,6 +123,41 @@ public class BasicBoard implements Board {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public int getNumVisible() {
+        return numVisible;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
+
+    @Override
+    public Boolean isComplete() {
+        return getNumMines() == (getNumCol() * getNumRow() - getNumVisible());
+    }
+
+    public void setNumCol(int numCol) {
+        this.numCol = numCol;
+    }
+
+    public void setNumRow(int numRow) {
+        this.numRow = numRow;
+    }
+
+    public void setNumMines(int numMines) {
+        this.numMines = numMines;
+    }
+
+    @Override
+    public void setNumVisible(int numVisible) {
+        this.numVisible = numVisible;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
     }
 
 }
