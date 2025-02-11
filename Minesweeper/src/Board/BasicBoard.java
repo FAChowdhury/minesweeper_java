@@ -3,50 +3,55 @@ package Board;
 import java.util.Random;
 
 public class BasicBoard implements Board {
-    private int width;
-    private int height;
+    private int numCol;
+    private int numRow;
     private int numMines;
     private Grid grid;
 
-    public BasicBoard(int width, int height, int numMines) {
-        this.width = width;
-        this.height = height;
+    public BasicBoard(int numCol, int numRow, int numMines) {
+        this.numCol = numCol;
+        this.numRow = numRow;
         this.numMines = numMines;
-        this.grid = new Grid(width, height);
+        this.grid = new Grid(numCol, numRow);
         this.resetBoard();
     }
 
     @Override
-    public int getWidth() {
-       return width;
+    public int getNumCol() {
+       return numCol;
     }
 
     @Override
-    public int getHeight() {
-        return height;
+    public int getNumRow() {
+        return numRow;
     }
 
     @Override
     public void resetBoard() {
-        // use width, height and numMines to set grid.
         placeMines();
         fillGrid();
     }
 
     @Override
-    public Boolean revealTile(int x, int y) {
-        // add visibility of grid here when we get to that
-        return grid.containsNegativeBool(x, y);
+    public Boolean revealTile(int row, int col) {
+        grid.revealTile(row, col);
+        return !grid.containsNegativeBool(row, col);
     }
 
     @Override
     public void render() {
-        for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
-                if (grid.containsNegativeBool(x, y)) {
-                    System.out.print("* ");
+        for (int i = 0; i < getNumRow(); ++i) {
+            for (int j = 0; j < getNumCol(); ++j) {
+                if (grid.isTileVisible(i, j)) {
+                    if (grid.containsNegativeBool(i, j)) {
+                        System.out.print("* ");
+                    } else {
+                        System.out.print(grid.getTileValue(i, j) + " ");
+                    }
+                } else if (grid.isTileFlagged(i, j)) {
+                    System.out.print("□ ");
                 } else {
-                    System.out.print(grid.getTileValue(x, y) + " ");
+                    System.out.print("# ");
                 }
             }
             System.out.println();
@@ -63,7 +68,7 @@ public class BasicBoard implements Board {
      */
     private void placeMines() {
         Random rand = new Random();
-        int bound = width * height;
+        int bound = numCol * numRow;
         for (int i = 0; i < numMines; ++i) {
             int randomInt = rand.nextInt(bound);
             while (grid.getTileValue(randomInt) == -1) {
@@ -74,21 +79,48 @@ public class BasicBoard implements Board {
     }
 
     private void fillGrid() {
-        for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
-                if (grid.containsNegativeBool(x, y)) {
+        for (int i = 0; i < numRow; ++i) {
+            for (int j = 0; j < numCol; ++j) {
+                if (grid.containsNegativeBool(i, j)) {
                     continue;
                 }
-                int value = grid.containsNegativeInt(x - 1, y - 1)
-                + grid.containsNegativeInt(x - 1, y)
-                + grid.containsNegativeInt(x - 1, y + 1)
-                + grid.containsNegativeInt(x, y - 1)
-                + grid.containsNegativeInt(x, y + 1)
-                + grid.containsNegativeInt(x + 1, y - 1)
-                + grid.containsNegativeInt(x + 1, y)
-                + grid.containsNegativeInt(x + 1, y + 1);
-                grid.setTileValue(x, y, value);
+                int value = grid.containsNegativeInt(i - 1, j - 1)
+                + grid.containsNegativeInt(i - 1, j)
+                + grid.containsNegativeInt(i - 1, j + 1)
+                + grid.containsNegativeInt(i, j - 1)
+                + grid.containsNegativeInt(i, j + 1)
+                + grid.containsNegativeInt(i + 1, j - 1)
+                + grid.containsNegativeInt(i + 1, j)
+                + grid.containsNegativeInt(i + 1, j + 1);
+                grid.setTileValue(i, j, value);
             }
+        }
+    }
+
+    @Override
+    public void flagTile(int row, int col) {
+        grid.flagTile(row, col);
+    }
+
+    @Override
+    public void unflagTile(int row, int col) {
+        grid.unflagTile(row, col);
+    }
+
+    @Override
+    public void renderBoardAsVisible() {
+        System.out.println();
+        System.out.println("Render Cheat");
+        System.out.println();
+        for (int i = 0; i < getNumRow(); ++i) {
+            for (int j = 0; j < getNumCol(); ++j) {
+                if (grid.containsNegativeBool(i, j)) {
+                    System.out.print("* ");
+                } else {
+                    System.out.print(grid.getTileValue(i, j) + " ");
+                }
+            }
+            System.out.println();
         }
     }
 

@@ -4,68 +4,123 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid {
-    private int width;
-    private int height;
+    private int numCol;
+    private int numRow;
     private List<Tile> grid;
     
-    public Grid(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.grid = new ArrayList<>(width * height);
-        for (int i = 0; i < width * height; ++ i) {
+    public Grid(int numCol, int numRow) {
+        this.numCol = numCol;
+        this.numRow = numRow;
+        this.grid = new ArrayList<>(numCol * numRow);
+        for (int i = 0; i < numCol * numRow; ++ i) {
             grid.add(new Tile());
         }
     }
 
-    public int getWidth() {
-        return width;
+    public int getNumCol() {
+        return numCol;
     }
     
-    public void setWidth(int width) {
-        this.width = width;
+    public void setNumCol(int numCol) {
+        this.numCol = numCol;
     }
 
-    public int getHeight() {
-        return height;
+    public int getNumRow() {
+        return numRow;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setNumRow(int numRow) {
+        this.numRow = numRow;
     }
 
-    public int getTileValue(int x, int y) {
-        if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
+    public int getTileValue(int row, int col) {
+        if (row < 0 || row > getNumRow() - 1 || col < 0 || col > getNumCol() - 1) {
             return 0;
         }
-        return grid.get(x * height + y).getValue();
+        return grid.get(row * getNumCol() + col).getValue();
     }
 
-    public void setTileValue(int x, int y, int value) {
-        if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
+    public void setTileValue(int row, int col, int value) {
+        if (row < 0 || row > getNumRow() - 1 || col < 0 || col > getNumCol() - 1) {
             return;
         }
-        grid.set(x * height + y, new Tile(value));
+        grid.set(row * getNumCol() + col, new Tile(value));
     }
 
     public int getTileValue(int idx) {
-        if (idx < 0 || idx > width * height - 1) {
+        if (idx < 0 || idx > getNumCol() * getNumRow() - 1) {
             return 0;
         }
         return grid.get(idx).getValue();
     }
 
     public void setTileValue(int idx, int value) {
-        if (idx < 0 || idx > width * height - 1) {
+        if (idx < 0 || idx > getNumCol() * getNumRow() - 1) {
             return;
         }
         grid.set(idx, new Tile(value));
     }
 
-    public int containsNegativeInt(int x, int y) {
-        return getTileValue(x, y) == -1 ? 1 : 0;
+    public Boolean isTileVisible(int row, int col) {
+        return grid.get(row * getNumCol() + col).getIsVisible();
     }
 
-    public Boolean containsNegativeBool(int x, int y) {
-        return getTileValue(x, y) == -1 ? true : false;
+    public Boolean isTileFlagged(int row, int col) {
+        return grid.get(row * getNumCol() + col).getIsFlagged();
+    }
+
+    public int containsNegativeInt(int row, int col) {
+        return getTileValue(row, col) == -1 ? 1 : 0;
+    }
+
+    public Boolean containsNegativeBool(int row, int col) {
+        return getTileValue(row, col) == -1 ? true : false;
+    }
+
+    public void flagTile(int row, int col) {
+        grid.get(row * getNumCol() + col).setIsFlagged(true);
+    }
+
+    public void unflagTile(int row, int col) {
+        grid.get(row * getNumCol() + col).setIsFlagged(false);
+    }
+
+    public void revealTile(int row, int col) {
+        int idx = row * getNumCol() + col;
+        if (!grid.get(idx).getIsFlagged()) {
+            if (grid.get(idx).getValue() == 0) {
+                revealTileWhenZero(row, col);
+            }
+            grid.get(idx).setIsVisible(true);
+        }
+    }
+
+    private void revealTileWhenZero(int row, int col) {
+        if (row < 0 || row > getNumRow() - 1 || col < 0 || col > getNumCol() - 1) {
+            return;
+        }
+
+        int idx = row * getNumCol() + col;
+
+        if (grid.get(idx).getIsVisible()) {
+            return;
+        }
+
+        if (grid.get(idx).getValue() != -1) {
+            grid.get(idx).setIsVisible(true);
+        }
+
+        if (grid.get(idx).getValue() != 0) {
+            return;
+        }
+
+        revealTileWhenZero(row - 1, col - 1);
+        revealTileWhenZero(row - 1, col);
+        revealTileWhenZero(row - 1, col + 1);
+        revealTileWhenZero(row, col - 1);
+        revealTileWhenZero(row, col + 1);
+        revealTileWhenZero(row + 1, col - 1);
+        revealTileWhenZero(row + 1, col);
+        revealTileWhenZero(row + 1, col + 1);
     }
 }

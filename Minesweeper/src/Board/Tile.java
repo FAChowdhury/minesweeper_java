@@ -7,6 +7,8 @@ public class Tile {
 
     public Tile(int value) {
         this.value = value;
+        this.isVisible = false;
+        this.isFlagged = false;
     }
 
     public Tile() {

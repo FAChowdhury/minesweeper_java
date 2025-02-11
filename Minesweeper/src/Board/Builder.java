@@ -1,8 +1,8 @@
 package Board;
 
 public interface Builder {
-    void setWidth(int width);
-    void setHeight(int height);
+    void setNumCol(int numCol);
+    void setNumRow(int numRow);
     void setNumMines(int numMines);
     Board generateBoard();
 }

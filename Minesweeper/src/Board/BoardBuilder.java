@@ -1,18 +1,18 @@
 package Board;
 
 public class BoardBuilder implements Builder {
-    private int width;
-    private int height;
+    private int numCol;
+    private int numRow;
     private int numMines;
 
     @Override
-    public void setWidth(int width) {
-        this.width = width;
+    public void setNumCol(int numCol) {
+        this.numCol = numCol;
     }
 
     @Override
-    public void setHeight(int height) {
-        this.height = height;
+    public void setNumRow(int numRow) {
+        this.numRow = numRow;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class BoardBuilder implements Builder {
 
     @Override
     public Board generateBoard() {
-        return new BasicBoard(width, height, numMines);
+        return new BasicBoard(numCol, numRow, numMines);
     }
 
 }
