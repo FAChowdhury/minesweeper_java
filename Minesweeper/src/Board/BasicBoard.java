@@ -41,12 +41,12 @@ public class BasicBoard implements Board {
 
     @Override
     public void render() {
-        for (int i = 0; i < width; ++i) {
-            for (int j = 0; j < height; ++j) {
-                if (grid.containsNegativeBool(i, j)) {
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                if (grid.containsNegativeBool(x, y)) {
                     System.out.print("* ");
                 } else {
-                    System.out.print(grid.get(i, j) + " ");
+                    System.out.print(grid.getTileValue(x, y) + " ");
                 }
             }
             System.out.println();
@@ -66,28 +66,28 @@ public class BasicBoard implements Board {
         int bound = width * height;
         for (int i = 0; i < numMines; ++i) {
             int randomInt = rand.nextInt(bound);
-            while (grid.get(randomInt) == -1) {
+            while (grid.getTileValue(randomInt) == -1) {
                 randomInt = rand.nextInt(bound);
             }
-            grid.set(randomInt, -1);
+            grid.setTileValue(randomInt, -1);
         }
     }
 
     private void fillGrid() {
-        for (int i = 0; i < width; ++i) {
-            for (int j = 0; j < height; ++j) {
-                if (grid.containsNegativeBool(i, j)) {
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                if (grid.containsNegativeBool(x, y)) {
                     continue;
                 }
-                int value = grid.containsNegativeInt(i - 1, j - 1)
-                + grid.containsNegativeInt(i - 1, j)
-                + grid.containsNegativeInt(i - 1, j + 1)
-                + grid.containsNegativeInt(i, j - 1)
-                + grid.containsNegativeInt(i, j + 1)
-                + grid.containsNegativeInt(i + 1, j - 1)
-                + grid.containsNegativeInt(i + 1, j)
-                + grid.containsNegativeInt(i + 1, j + 1);
-                grid.set(i, j, value);
+                int value = grid.containsNegativeInt(x - 1, y - 1)
+                + grid.containsNegativeInt(x - 1, y)
+                + grid.containsNegativeInt(x - 1, y + 1)
+                + grid.containsNegativeInt(x, y - 1)
+                + grid.containsNegativeInt(x, y + 1)
+                + grid.containsNegativeInt(x + 1, y - 1)
+                + grid.containsNegativeInt(x + 1, y)
+                + grid.containsNegativeInt(x + 1, y + 1);
+                grid.setTileValue(x, y, value);
             }
         }
     }

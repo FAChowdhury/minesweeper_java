@@ -21,8 +21,8 @@ public class BoardDirector {
     }
 
     public void constructTestBoard(Builder builder) {
-        builder.setHeight(18);
-        builder.setWidth(17);
+        builder.setHeight(20);
+        builder.setWidth(10);
         builder.setNumMines(40);
     }
 
