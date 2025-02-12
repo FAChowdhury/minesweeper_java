@@ -1,4 +1,7 @@
 package Board;
+
+import java.time.LocalDateTime;
+
 public interface Board {
     /**
      * @return the number of columns of the board.
@@ -64,7 +67,7 @@ public interface Board {
     /**
      * Renders the board to terminal
      */
-    void render();
+    void render(LocalDateTime startTime);
 
     /**
      * Renders the entire board as if all the tiles are visible.

@@ -88,14 +88,12 @@ public class Grid {
     public void revealTile(int row, int col, Board board) {
         int idx = row * getNumCol() + col;
         int newlyVisibleTiles = 0;
-        if (!grid.get(idx).getIsFlagged()) {
-            if (grid.get(idx).getValue() == 0) {
-                newlyVisibleTiles = revealTileWhenZero(row, col);
-                board.setNumVisible(board.getNumVisible() + newlyVisibleTiles);
-            } else {
-                grid.get(idx).setIsVisible(true);
-                board.setNumVisible(board.getNumVisible() + 1);
-            }
+        if (grid.get(idx).getValue() == 0) {
+            newlyVisibleTiles = revealTileWhenZero(row, col);
+            board.setNumVisible(board.getNumVisible() + newlyVisibleTiles);
+        } else {
+            grid.get(idx).setIsVisible(true);
+            board.setNumVisible(board.getNumVisible() + 1);
         }
     }
 

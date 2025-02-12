@@ -1,5 +1,7 @@
 package Board;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 public class BasicBoard implements Board {
@@ -36,12 +38,22 @@ public class BasicBoard implements Board {
 
     @Override
     public Boolean revealTile(int row, int col) {
-        grid.revealTile(row, col, this);
-        return !grid.containsNegativeBool(row, col);
+        if (!getGrid().isTileFlagged(row, col)) {
+            grid.revealTile(row, col, this);
+            return !grid.containsNegativeBool(row, col);
+        }
+        return true;
     }
 
     @Override
-    public void render() {
+    public void render(LocalDateTime startTime) {
+        // calculate duration
+        LocalDateTime currentTime = LocalDateTime.now();
+        Duration elapsed = Duration.between(startTime, currentTime);
+        long secondsElapsed = elapsed.toSeconds();
+
+        System.out.println("Total Number of Mines: " + getNumMines());
+        System.out.println("Time Elapsed: " + secondsElapsed);
         for (int i = 0; i < getNumRow(); ++i) {
             for (int j = 0; j < getNumCol(); ++j) {
                 if (grid.isTileVisible(i, j)) {
